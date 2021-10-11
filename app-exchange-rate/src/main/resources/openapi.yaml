@@ -1,0 +1,75 @@
+openapi: '3.0.0'
+info:
+  version: 1.0.0
+  title: Exchange rate
+servers:
+  - url: http://localhost:8080
+paths:
+  /exchange-rate:
+    post:
+      summary: Calculate exchange rate
+      operationId: exchangeRate
+      tags:
+        - exchangeRate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExchangeRateRequest"
+        description: Service entrance
+        required: true
+      responses:
+        '200':
+          description: Exchange rate
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExchangeRateResponse"
+components:
+  schemas:
+    ExchangeRateRequest:
+      required:
+        - amount
+        - originCurrency
+        - destinationCurrency
+      properties:
+        amount:
+          type: number
+          example: 9999.99
+          description: Monto.
+          nullable: false
+          minLength: 0
+        currencyFrom:
+          type: string
+          example: PEN
+          description: Moneda origen.
+          pattern: '^(PEN|USD)$'
+          nullable: false
+        currencyTo:
+          type: string
+          example: USD
+          description: Moneda destino.
+          pattern: '^(PEN|USD)$'
+          nullable: false
+    ExchangeRateResponse:
+      properties:
+        amount:
+          type: number
+          example: 9999.99
+          description: Monto.
+        amountWithExchangeRate:
+          type: number
+          example: 9999.99
+          description: Monto con tipo de cambio.
+        currencyFrom:
+          type: string
+          example: PEN
+          description: Moneda origen.
+        currencyTo:
+          type: string
+          example: USD
+          description: Moneda destino.
+        exchangeRate:
+          type: number
+          example: 4.098
+          description: Tipo de cambio.
